@@ -1,0 +1,12 @@
+{
+  "name": "@thisiscortex/voice-runtime",
+  "version": "0.1.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "verify": "python3 -m unittest discover -s tests -p '*_test.py' -v && python3 packages/stt/stt_daemon.py --self-test && node scripts/verify-source.mjs",
+    "build:stt": "node scripts/build-runtime.mjs stt",
+    "build:tts": "node scripts/build-runtime.mjs tts",
+    "verify:release": "node scripts/verify-release.mjs"
+  }
+}
