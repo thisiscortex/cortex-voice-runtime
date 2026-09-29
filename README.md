@@ -63,6 +63,10 @@ STT and TTS independently on macOS 14 and 15 Apple Silicon runners, verifies
 each archive, and retains the exact archives plus hash metadata as short-lived
 CI artifacts. A green CI artifact is not automatically a public release: the
 Core host pin and live packaged microphone/playback proof still gate promotion.
+The four macOS 14/15 archives from the successful qualification run were also
+copied into ignored local `dist/` and rechecked by SHA-256. They remain local
+release candidates; Core must keep its existing fallback until those exact
+artifacts are published and the runtime path is qualified on each target OS.
 
 The host integration gate also exercises local voice start/stop, model cache
 release, setup progress, first voice use, packaged launch and conversation
