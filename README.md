@@ -58,6 +58,12 @@ on macOS 26; MLX wheels selected there require that OS major, so its manifest
 declares `minimumMacos: "26.0"`. Other platforms need their own build and real
 qualification. Generated `dist/` files stay out of Git.
 
+The dispatch-only `Qualify macOS voice runtimes` workflow builds and relocates
+STT and TTS independently on macOS 14 and 15 Apple Silicon runners, verifies
+each archive, and retains the exact archives plus hash metadata as short-lived
+CI artifacts. A green CI artifact is not automatically a public release: the
+Core host pin and live packaged microphone/playback proof still gate promotion.
+
 The host integration gate also exercises local voice start/stop, model cache
 release, setup progress, first voice use, packaged launch and conversation
 readability. A source test alone does not qualify a user install.

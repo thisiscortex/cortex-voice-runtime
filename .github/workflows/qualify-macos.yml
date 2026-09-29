@@ -1,0 +1,41 @@
+name: Qualify macOS voice runtimes
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  runtime:
+    strategy:
+      fail-fast: false
+      matrix:
+        macos: [14, 15]
+    runs-on: macos-${{ matrix.macos }}
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@bec219d24cd3e171d82865faccec33120bb574f4 # v10.1.0
+        with:
+          version: "0.11.20"
+      - name: Prepare managed Python
+        run: uv python install 3.12
+      - name: Verify source contracts
+        run: npm run verify
+      - name: Build and relocate STT
+        run: npm run build:stt
+      - name: Qualify STT archive
+        run: node scripts/verify-release.mjs dist/cortex-voice-stt-0.1.1-darwin-arm64-macos${{ matrix.macos }}.tar.gz
+      - name: Build and relocate TTS
+        run: npm run build:tts
+      - name: Qualify TTS archive
+        run: node scripts/verify-release.mjs dist/cortex-voice-tts-0.1.1-darwin-arm64-macos${{ matrix.macos }}.tar.gz
+      - uses: actions/upload-artifact@v4
+        with:
+          name: voice-macos-${{ matrix.macos }}
+          path: |
+            dist/*.tar.gz
+            dist/*.release.json
+          compression-level: 0
+          retention-days: 7
